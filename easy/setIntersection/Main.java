@@ -1,0 +1,58 @@
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Main {
+
+	public static void resolve(String data) {
+		String[] list = data.split(";");
+		String[] list1 = list[0].split(",");
+		String[] list2 = list[1].split(",");
+		StringBuilder sb = new StringBuilder();
+
+		if (Integer.valueOf(list1[list1.length - 1]) >= Integer
+				.valueOf(list2[0])) {
+			int startIdx = 0;
+			for (int i = 0; i < list1.length; i++) {
+				if (startIdx == list2.length - 1)
+					break;
+				for (int j = startIdx; j < list2.length; j++) {
+					if (Integer.valueOf(list1[i]) < Integer.valueOf(list2[0]))
+						break;
+					if (list1[i].equals(list2[j])) {
+						sb.append(list1[i]).append(",");
+						startIdx = j;
+					}
+				}
+			}
+			if (sb.toString().endsWith(","))
+				System.out.print(sb.substring(0, sb.length() - 1));
+		}
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		File file = new File(args[0]);
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				resolve(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+}
